@@ -116,6 +116,17 @@ public class SteamLobbyManager : MonoBehaviour
         obj.GetComponentInChildren<RawImage>().texture = await SteamFriendsManager.GetTextureFromSteamIdAsync(SteamClient.SteamId);
         inLobby.Add(SteamClient.SteamId, obj);
 
+        foreach(var friend in currentLobby.Members)
+        {
+            if(friend.Id != SteamClient.SteamId)
+            {
+                GameObject obj2 = Instantiate(InLobbyFriend, content);
+                obj2.GetComponentInChildren<Text>().text = friend.Name;
+                obj2.GetComponentInChildren<RawImage>().texture = await SteamFriendsManager.GetTextureFromSteamIdAsync(friend.Id);
+
+                inLobby.Add(friend.Id, obj2);
+            }
+        }
 
         OnLobbyJoined.Invoke();
 
